@@ -1,4 +1,5 @@
-# LMS-uPnP-Docker
+# Docker Logitech Media Center uPnP Bridge
+
 docker image for philippe44/LMS-uPnP
 
 ## Background
@@ -7,11 +8,12 @@ This is a well-known logitech media server extension, which bridges DLNA compati
 Usually you will get it installed together with LMS, from its plugins repository. This option requires you to run LMS docker image in host network mode.
 
 In my case, I don't want to run the bridge inside LMS container, simply because:
+
    1. I don't want to expose entire LMS service onto my host network.
-   2. It is hard to check the bridge running state, well it is possibile via LMS but requires a few clicks.
+   2. It is hard to check the bridge running state, well it is possible via LMS but requires a few clicks.
    3. For small customizations.
 
-Thus I decided to build this tiny docker image dedicated for runing the bridge only.
+Thus I decided to build this tiny docker image dedicated for running the bridge only.
 
 ## Configuration
 
@@ -46,8 +48,9 @@ If that is not enough, customize /config/upnpbridge.xml yourself and restart the
 ## Technical Note
 
 The bridge will bind on at least 2 ports:
-   * 49152: upnp socket starting port, a new web service will be made for each running client following this port
-   * 1900: this is not explicitly mentioned, it is the dnla server port
 
-While deploying the bridge first time, I got strange port bind error due to 1900 port occupassion. The jellyfin service running on my NAS box also binds to port 1900.
+* 49152: upnp socket starting port, a new web service will be made for each running client following this port
+* 1900: this is not explicitly mentioned, it is the dnla server port
+
+While deploying the bridge first time, I got strange port bind error due to 1900 port occupation. The jellyfin service running on my NAS box also binds to port 1900.
 You have to turn off the other dlna server in this case and free up 1900.
