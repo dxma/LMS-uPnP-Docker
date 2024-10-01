@@ -22,7 +22,9 @@ RUN sed -i 's#mirrors.ustc.edu.cn/debian-security#security.debian.org/debian-sec
 RUN useradd -u $PUID -g $PGID -G audio -d /config -m squeeze2upnp
 
 # Download squeeze2upnp binaries
-RUN cd /tmp && wget https://udomain.dl.sourceforge.net/project/lms-plugins-philippe44/UPnPBridge-$VERSION.zip && unzip UPnPBridge-$VERSION.zip && cp Bin/squeeze2upnp-linux-x86_64* /usr/bin && chmod 0755 /usr/bin/squeeze2upnp-linux-x86_64*
+RUN cd /tmp && wget https://udomain.dl.sourceforge.net/project/lms-plugins-philippe44/UPnPBridge-$VERSION.zip && \
+	unzip UPnPBridge-$VERSION.zip && cp Bin/squeeze2upnp-linux-x86_64* /usr/bin && chmod 0755 /usr/bin/squeeze2upnp-linux-x86_64* && \
+	rm -rf /tmp/*
 
 # Add startup script
 COPY start-container.sh /usr/bin/start-container
