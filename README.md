@@ -26,8 +26,6 @@ services:
     image: dxma/lms-upnp:2.2.3
     container_name: lms-upnp
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Asia/Shanghai
     volumes:
       - /Application/lms-upnp:/config
@@ -36,6 +34,7 @@ services:
     network_mode: host
 ```
 
+Make sure the mount folder on host has correct ownership: UID=1000, GID=100.
 First create the configuration file /config/config.xml:
 
 ```bash
