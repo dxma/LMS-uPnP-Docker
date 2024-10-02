@@ -5,7 +5,7 @@ FROM debian:bullseye-slim
 # Set environment variables
 ENV DEBIAN_FRONTEND noninteractive
 ENV LC_ALL="C.UTF-8" LANG="en_US.UTF-8" LANGUAGE="en_US.UTF-8"
-ENV PUID=1000 PGID=1000
+ENV PUID=1000 PGID=100
 
 ENV VERSION=3.3.9
 
@@ -20,7 +20,6 @@ RUN sed -i 's#deb.debian.org#mirrors.ustc.edu.cn#g' /etc/apt/sources.list && sed
 RUN sed -i 's#mirrors.ustc.edu.cn/debian-security#security.debian.org/debian-security#g' /etc/apt/sources.list && sed -i 's#mirrors.ustc.edu.cn#deb.debian.org#g' /etc/apt/sources.list
 
 # Add user
-RUN groupadd -g $PGID squeeze2upnp
 RUN useradd -u $PUID -g $PGID -G audio -d /config -m squeeze2upnp
 
 # Download binary
