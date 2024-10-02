@@ -23,34 +23,38 @@ Way to run and configure the docker service, via docker compose. Below is my com
 version: "2.1"
 services:
   lms-upnp-bridge:
-    image: dxma/lms-upnp-bridge:2.2.3
-    container_name: lms-upnp-bridge
+    image: dxma/lms-upnp:2.2.3
+    container_name: lms-upnp
     environment:
       - PUID=1000
-      - PGID=100
+      - PGID=1000
       - TZ=Asia/Shanghai
     volumes:
-      - /Application/lms-upnp-bridge:/config
+      - /Application/lms-upnp:/config
     restart: unless-stopped
 
     network_mode: host
 ```
 
-At first run, the container will try to discover all clients inside your network. A config file /config/upnpbridge.xml will be made when everything goes well. The container will
-then exit automatically.
-Start the container again and you are good to go.
+First create the configuration file /config/config.xml:
 
-## Troubleshoot
+```bash
+docker run -it --rm -e TZ=Asia/Shanghai --network=host -v /Application/lms-upnp:/config dxma/lms-upnp:2.2.3 squeeze2upnp-linux-x86_64 -i config.xml
+```
+
+Tweak the settings inside, start the container with default command and you are good to go.
+
+## Debug
 
 First check the container log, everything will be printed there.
-If that is not enough, customize /config/upnpbridge.xml yourself and restart the container. A common helpful approach is change logging level from info (default) into debug.
+If that is not enough, customize /config/config.xml yourself and restart the container. A common helpful approach is change logging level from info (default) into debug.
 
-## Technical Note
+## Bugs
 
-The bridge will bind on at least 2 ports:
+The bridge will bind on 2 ports:
 
-* 49152: upnp socket starting port, a new web service will be made for each running client following this port
-* 1900: this is not explicitly mentioned, it is the dnla server port
+1. 49152: upnp socket starting port, a new web service will be made for each running client following this port
+2. 1900: this is not explicitly mentioned, it is the dnla server port
 
 While deploying the bridge first time, I got strange port bind error due to 1900 port occupation. The jellyfin service running on my NAS box also binds to port 1900.
 You have to turn off the other dlna server in this case and free up 1900.
